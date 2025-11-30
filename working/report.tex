@@ -1,0 +1,394 @@
+\subsection{Medium Risk}\label{medium-risk}
+
+\subsubsection{Incorrect 1:1 Transfers Without Decimal Normalization
+Between
+Tokens}\label{incorrect-11-transfers-without-decimal-normalization-between-tokens}
+
+\textbf{Severity:} Medium Risk
+
+\textbf{Context:}
+\href{https://cantina.xyz/code/1a5720f1-29b4-48b2-a47b-b4b1dd57796f/programs/scaas-liquidity/src/lib.rs\#L167-L177}{lib.rs\#L167-L177}
+
+\textbf{Description:} The protocol currently assumes that all supported
+tokens share the same decimal configuration and transfers
+\texttt{amount\_after\_fee} 1:1 between \texttt{from\_mint\ }and
+\texttt{to\_mint\ }without normalizing for their respective decimals. If
+a token is onboarded with a different decimals value than others, the
+protocol\textquotesingle s accounting becomes inconsistent: the same
+integer amount may represent different real-world quantities of value.
+This can result in users receiving too much or too little when swapping
+or redeeming, causing potential loss of user funds or value extraction
+in misconfigured pools.
+
+\textbf{Recommendation:}
+
+\begin{itemize}
+\item
+  Option A (preferred for flexibility): Always read decimals from both
+  mints and normalize amounts before slippage checks, liquidity checks,
+  and transfers (e.g., adjust by. 10 to\_decimals − from\_decimals 10
+  to\_decimals−from\_decimals with safe math and clear rounding rules).
+\item
+  Option B (simpler operationally): On token onboarding, enforce that
+  all supported mints have identical decimals, rejecting any that
+  differ, and document this invariant clearly in code and docs.
+\end{itemize}
+
+\subsubsection{Deppeged tokens can be used to drain the other
+tokens}\label{deppeged-tokens-can-be-used-to-drain-the-other-tokens}
+
+\textbf{Severity:} Medium Risk
+
+\textbf{Context:} \emph{(No context files were provided by the
+reviewer)}
+
+\textbf{Description:} Swaps in the liquidity pool are implemented at a
+hard-coded 1:1 exchange rate between any two supported tokens, with only
+a fee applied on the input token:
+
+\begin{itemize}
+\tightlist
+\item
+  User provides \texttt{amount\_in} of \texttt{from\_mint}.
+\item
+  The program computes a fee:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{fee\_amount\ =\ amount\_in\ *\ fee\_rate\ /\ 10\_000}.
+  \end{itemize}
+\item
+  The net amount is:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{amount\_after\_fee\ =\ amount\_in\ -\ fee\_amount}.
+  \end{itemize}
+\item
+  \texttt{amount\_after\_fee} of \texttt{from\_mint} is transferred from
+  the user into the \texttt{from\_vault}.
+\item
+  The same \texttt{amount\_after\_fee} of \texttt{to\_mint} is
+  transferred from the \texttt{to\_vault} to the user.
+\item
+  There is no pricing curve or oracle; the swap is always 1:1 on the net
+  amount, regardless of external market prices.
+\end{itemize}
+
+At the same time, there is no mechanism to remove or disable a token
+once it has been added to \texttt{supported\_tokens}. As long as a mint
+remains in the supported set, it can be used in swaps indefinitely.
+
+This combination creates an economical risk: if one supported token
+depegs (e.g., a token trades under \texttt{\$1-f}, where \texttt{f} is
+the fee, on external markets), an attacker can:
+
+\begin{itemize}
+\tightlist
+\item
+  Buy the depegged token cheaply on other markets.
+\item
+  Swap it in this pool at the fixed 1:1 rate for healthy tokens.
+\item
+  Systematically drain the pool\textquotesingle s good assets by
+  repeating this trade.
+\end{itemize}
+
+Because there is no way to delist or isolate the compromised mint, the
+pool remains fully exposed to this drain scenario until the authority
+pauses the swaps and program is upgraded to introduce a way to remove
+that token.
+
+\textbf{Recommendation:} Add a mechanism for the authority to remove or
+disable a token from the pool (e.g., remove it from
+\texttt{supported\_tokens} or mark it as inactive). Because the program
+is upgradable this issue was marked as Medium.
+
+\subsection{Informational}\label{informational}
+
+\subsubsection{Minor issues and typos}\label{minor-issues-and-typos}
+
+\textbf{Severity:} Informational
+
+\textbf{Context:}
+\href{https://cantina.xyz/code/1a5720f1-29b4-48b2-a47b-b4b1dd57796f/programs/scaas-liquidity/src/errors.rs\#L23-L24}{errors.rs\#L23-L24},
+\href{https://cantina.xyz/code/1a5720f1-29b4-48b2-a47b-b4b1dd57796f/programs/scaas-liquidity/src/errors.rs\#L25-L27}{errors.rs\#L25-L27}
+
+\textbf{Description:}
+
+\begin{itemize}
+\item[$\square$]
+  We use \texttt{MAX\_FEE\_RATE} to represent the 10\% max fee, but for
+  100\% we use 10000, consider using a constant as well
+  \texttt{FEE\_DENOMINATOR}.
+\item[$\square$]
+  The following errors
+  \texttt{InvalidFeeRecipient\ ("Invalid\ fee\ recipient")},
+  \texttt{InvalidVaultAccount\ ("Invalid\ vault\ account")}, and
+  \texttt{ReservationOverflow\ ("Reservation\ overflow")} are not used.
+\item[$\square$]
+  The swap vaults accounts naming \texttt{from\_vault},
+  \texttt{to\_vault} are a bit misleading, especially in the CPI calls
+  \texttt{from:\ ctx.accounts.to\_vault\_token\_account.to\_account\_info(),}.
+  Consider renaming them to \texttt{in\_vault}/\texttt{out\_vault}.
+\item[$\square$]
+  The \texttt{pool} cached in the vault account is unnecessary, the pool
+  is already in the vault\textquotesingle s seed.
+\end{itemize}
+
+\textbf{Recommendation:} Consider fixing the issues mentioned above.
+
+\subsubsection{Missing Usage and Validation for Persisted Vault
+Account}\label{missing-usage-and-validation-for-persisted-vault-account}
+
+\textbf{Severity:} Informational
+
+\textbf{Context:}
+\href{https://cantina.xyz/code/1a5720f1-29b4-48b2-a47b-b4b1dd57796f/programs/scaas-liquidity/src/state.rs\#L24}{state.rs\#L24}
+
+\textbf{Description:} The program persists
+\texttt{TokenVault.vault\_account} as a Pubkey, but this field is never
+read or validated against the PDA SPL token account that the program
+actually uses at runtime. All instructions that operate on the vault
+token account instead derive and constrain the PDA directly, so changing
+vault\_account does not currently affect behavior or funds; it is
+effectively unused metadata. However, this mismatch between stored state
+and actual behavior can mislead off-chain indexers, audits, or future
+code that assumes \texttt{vault\_account} reflects the true vault token
+account.
+
+\textbf{Recommendation:} To remediate this, the program should either
+enforce consistency or remove the field. One option is to keep
+\texttt{vault\_account} and add explicit checks in instructions that
+derive the PDA vault, asserting it equals
+\texttt{TokenVault.vault\_account}, and initialize it to the derived PDA
+when the vault is created. The other option is to remove vault\_account
+entirely if it is not needed, simplifying the account state and avoiding
+confusion, and to add tests that confirm vault behavior relies solely on
+the PDA constraints rather than the persisted field.
+
+\subsubsection{Unnecessary Mutable Account in swap
+Context}\label{unnecessary-mutable-account-in-swap-context}
+
+\textbf{Severity:} Informational
+
+\textbf{Context:}
+\href{https://cantina.xyz/code/1a5720f1-29b4-48b2-a47b-b4b1dd57796f/programs/scaas-liquidity/src/lib.rs\#L425-L430}{lib.rs\#L425-L430}
+
+\textbf{Description:} The Swap instruction marks
+\texttt{to\_vault:\ Account\textless{}\textquotesingle{}info,\ TokenVault\textgreater{}\ }as
+\texttt{mut}, but the handler only reads from this account (to check
+reserved\_amount) and never modifies it. This causes the runtime to take
+a write lock on \texttt{to\_vault} unnecessarily, slightly increasing
+compute and contention without any corresponding safety benefit.
+It\textquotesingle s not a direct security risk, but it is a
+correctness/efficiency smell and can marginally increase the
+program\textquotesingle s surface for runtime failures under heavy load.
+
+\textbf{Recommendation:} In the Swap accounts struct, remove
+\texttt{mut\ }from the \texttt{to\_vault\ }account declaration so
+it\textquotesingle s read‑only instead of mutable.
+
+\subsubsection{Unrestricted initialize Allows First Caller to Seize
+Administrative
+Roles}\label{unrestricted-initialize-allows-first-caller-to-seize-administrative-roles}
+
+\textbf{Severity:} Informational
+
+\textbf{Context:}
+\href{https://cantina.xyz/code/1a5720f1-29b4-48b2-a47b-b4b1dd57796f/programs/scaas-liquidity/src/lib.rs\#L26-L28}{lib.rs\#L26-L28}
+
+\textbf{Description:} The initialize instruction is currently
+permissionless and allows any caller to set critical administrative
+authorities for the pool. Because there is no restriction that
+initialize must be invoked by a known, trusted signer (e.g., deployer or
+upgrade authority), the first caller can front‑run the intended deployer
+and set themselves as \texttt{operations\_authority},
+\texttt{pause\_authority,} and \texttt{fee\_recipient}. This effectively
+grants them control over pool operations (including pausing) and fee
+collection. While the impact may be mitigated in this deployment by the
+ability to redeploy a single pool, the pattern introduces unnecessary
+first‑caller risk and weakens the trust model around administrative
+control.
+
+\textbf{Recommendation:} Restrict the initialize instruction so it can
+only be called by a trusted, predefined authority. Possible fixes:
+
+\begin{itemize}
+\item
+  Require a specific Signer account with a hard‑coded or
+  configuration‑stored address (e.g., deployer / upgrade authority) via
+  an Anchor address constraint.
+\item
+  Alternatively, introduce a configuration account (PDA) that stores an
+  admin address and enforce
+  \texttt{ctx.accounts.initializer.key()\ ==\ config.admin} in
+  initialize.
+\end{itemize}
+
+\subsubsection{\texorpdfstring{The \texttt{reserved\_amount} is
+obsolete}{The reserved\_amount is obsolete}}\label{the-reserved_amount-is-obsolete}
+
+\textbf{Severity:} Informational
+
+\textbf{Context:} \emph{(No context files were provided by the
+reviewer)}
+
+\textbf{Description:} From the implementation:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{TokenVault} has \texttt{reserved\_amount:\ u64}.
+\item
+  In \texttt{swap}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{available\_liquidity\ =\ vault\_token\_account.amount\ -\ to\_vault.reserved\_amount}.
+  \item
+    Require
+    \texttt{available\_liquidity\ \textgreater{}=\ amount\_after\_fee}.
+  \end{itemize}
+\item
+  In \texttt{withdraw\_liquidity}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{available\ =\ vault\_token\_account.amount\ -\ vault.reserved\_amount}.
+  \item
+    Require \texttt{amount\ \textless{}=\ available}.
+  \end{itemize}
+\item
+  In \texttt{update\_reserved\_amount}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Only check
+    \texttt{new\_reserved\_amount\ \textless{}=\ vault\_token\_account.amount}.
+  \end{itemize}
+\end{itemize}
+
+So this is used for a portion of the vault balance is made unavailable
+for swaps made by users and withdrawals by the operations authority.
+
+We do not see what is the benefit of this variable, other than maybe
+stop the swaps to a specific token.
+
+\textbf{Recommendation:} If you still want to use this variable more
+like a swap limit then keeping it for swaps is completely fine. We
+recommend deleting it from the withdraw liquidity because this is anyway
+a limit that can be changed by the same authority that withdraws.
+
+\subsubsection{User pays for fee recipient ATA
+creation}\label{user-pays-for-fee-recipient-ata-creation}
+
+\textbf{Severity:} Informational
+
+\textbf{Context:} \emph{(No context files were provided by the
+reviewer)}
+
+\textbf{Description:} At the first swap for a token that was just added,
+the user has to pay for the ATA creation for the fee recipient:
+
+\begin{minted}[]{rust}
+#[account(
+      init_if_needed,
+      payer = user,
+      associated_token::mint = from_mint,
+      associated_token::authority = fee_recipient
+  )]
+    pub fee_recipient_token_account: Account<'info, TokenAccount>,
+\end{minted}
+
+The users should never pay for account creation of the fee recipient.
+
+\textbf{Recommendation:} Consider creating this ATA when the token is
+first added in \texttt{add\_supported\_token}.
+
+\subsubsection{Fees are rounding down}\label{fees-are-rounding-down}
+
+\textbf{Severity:} Informational
+
+\textbf{Context:} \emph{(No context files were provided by the
+reviewer)}
+
+\textbf{Description:} The fees are rounding down when it should round
+up:
+
+\begin{minted}[]{rust}
+let fee_amount = (amount_in as u128)
+    .checked_mul(pool.fee_rate as u128)
+    .unwrap()
+    .checked_div(10000)
+    .unwrap() as u64;
+\end{minted}
+
+Theoretically someone can split the swaps in low amounts to avoid paying
+large fees but in our case as everything is 1:1, the gain is not that
+much to worth the fee.
+
+\textbf{Recommendation:} Consider rounding up the fee.
+
+\subsubsection{Token Accounts are not checked that they correspond to
+the
+user/authority}\label{token-accounts-are-not-checked-that-they-correspond-to-the-userauthority}
+
+\textbf{Severity:} Informational
+
+\textbf{Context:} \emph{(No context files were provided by the
+reviewer)}
+
+\textbf{Description:} In \texttt{swap} and other instructions, SPL token
+accounts are only constrained by mint, not that their owner is the user,
+for example:
+
+\begin{minted}[]{rust}
+#[account(
+    mut,
+    token::mint = from_mint,
+)]
+pub user_from_token_account: Account<'info, TokenAccount>,
+
+#[account(
+    mut,
+    token::mint = to_mint,
+)]
+pub user_to_token_account: Account<'info, TokenAccount>,
+\end{minted}
+
+Similar patterns appear in other instructions (e.g. deposit/withdraw),
+where we only check \texttt{token::mint\ =\ ...} but not
+\texttt{token::authority\ =\ user} (or the respective signer / pool /
+operations authority).
+
+This means the program does not enforce on-chain that these token
+accounts are actually controlled by the expected wallet.
+
+\textbf{Recommendation:} If this is a design choice then nothing should
+be done, otherwise account constraints should be implemented for every
+token account.
+
+\subsubsection{Deposit instruction checks can be
+circumvented}\label{deposit-instruction-checks-can-be-circumvented}
+
+\textbf{Severity:} Informational
+
+\textbf{Context:} \emph{(No context files were provided by the
+reviewer)}
+
+\textbf{Description:} The deposit instruction does not provide control
+over how liquidity enters the vaults because the actual vault balance
+can be increased at any time by the operations authority (or anyone) by
+calling the SPL Token program directly to transfer into
+\texttt{vault\_token\_account}, completely bypassing the
+\texttt{pool.liquidity\_paused} check.
+
+\textbf{Recommendation:} We do not recommend any action regarding this
+issue other than documenting the fact that deposit paused check can be
+circumvented.

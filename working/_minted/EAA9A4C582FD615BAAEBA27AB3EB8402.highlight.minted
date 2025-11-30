@@ -1,0 +1,10 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+programs/scaas\PYGZhy{}liquidity
+├──\PYG{+w}{ }Cargo.toml
+├──\PYG{+w}{ }src
+│\PYG{+w}{   }├──\PYG{+w}{ }constants.rs
+│\PYG{+w}{   }├──\PYG{+w}{ }errors.rs
+│\PYG{+w}{   }├──\PYG{+w}{ }lib.rs
+│\PYG{+w}{   }└──\PYG{+w}{ }state.rs
+└──\PYG{+w}{ }Xargo.toml
+\end{MintedVerbatim}

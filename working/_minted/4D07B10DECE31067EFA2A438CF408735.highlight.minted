@@ -1,0 +1,9 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{c+cp}{\PYGZsh{}[}\PYG{c+cp}{account(}
+\PYG{c+cp}{      init\PYGZus{}if\PYGZus{}needed,}
+\PYG{c+cp}{      payer = user,}
+\PYG{c+cp}{      associated\PYGZus{}token::mint = from\PYGZus{}mint,}
+\PYG{c+cp}{      associated\PYGZus{}token::authority = fee\PYGZus{}recipient}
+\PYG{c+cp}{  )}\PYG{c+cp}{]}
+\PYG{+w}{    }\PYG{k}{pub}\PYG{+w}{ }\PYG{n}{fee\PYGZus{}recipient\PYGZus{}token\PYGZus{}account}\PYG{p}{:}\PYG{+w}{ }\PYG{n+nc}{Account}\PYG{o}{\PYGZlt{}}\PYG{o}{\PYGZsq{}}\PYG{n+na}{info}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{TokenAccount}\PYG{o}{\PYGZgt{}}\PYG{p}{,}
+\end{MintedVerbatim}

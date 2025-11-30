@@ -1,0 +1,7 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{let}\PYG{+w}{ }\PYG{n}{fee\PYGZus{}amount}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{amount\PYGZus{}in}\PYG{+w}{ }\PYG{k}{as}\PYG{+w}{ }\PYG{k+kt}{u128}\PYG{p}{)}
+\PYG{+w}{    }\PYG{p}{.}\PYG{n}{checked\PYGZus{}mul}\PYG{p}{(}\PYG{n}{pool}\PYG{p}{.}\PYG{n}{fee\PYGZus{}rate}\PYG{+w}{ }\PYG{k}{as}\PYG{+w}{ }\PYG{k+kt}{u128}\PYG{p}{)}
+\PYG{+w}{    }\PYG{p}{.}\PYG{n}{unwrap}\PYG{p}{(}\PYG{p}{)}
+\PYG{+w}{    }\PYG{p}{.}\PYG{n}{checked\PYGZus{}div}\PYG{p}{(}\PYG{l+m+mi}{10000}\PYG{p}{)}
+\PYG{+w}{    }\PYG{p}{.}\PYG{n}{unwrap}\PYG{p}{(}\PYG{p}{)}\PYG{+w}{ }\PYG{k}{as}\PYG{+w}{ }\PYG{k+kt}{u64}\PYG{p}{;}
+\end{MintedVerbatim}
