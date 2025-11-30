@@ -1,28 +1,30 @@
-
-
-\hypertarget{spearbit}{%
-\section{About Spearbit}\label{spearbit}}
-Spearbit is a decentralized network of expert security engineers offering reviews and
-other security related services to Web3 projects with the goal of creating a stronger ecosystem.
-Our network has experience on every part of the blockchain technology stack,
-including but not limited to protocol design, smart contracts and the Solidity compiler.
-Spearbit brings in untapped security talent by enabling expert freelance auditors seeking
-flexibility to work on interesting projects together.
-
-Learn more about us at \href{https://spearbit.com}{spearbit.com}
-
 \hypertarget{introduction}{%
 \section{Introduction}\label{introduction}}
 
-\input{introduction.tex}
+
+\hypertarget{about_cantina}{
+\subsection{About Cantina}\label{about cantina}}
+Cantina is a security services marketplace that connects top security
+researchers and solutions with clients. Learn more at
+\href{https://cantina.xyz}{cantina.xyz}
 
 
-\textit{Disclaimer}: This security review does not guarantee against a hack. It is a snapshot in time of Coinbase   stablecoin liquidity according to the specific commit. Any modifications to the code will require a new security review.
+\hypertarget{disclaimer}{
+\subsection{Disclaimer}\label{disclaimer}}
+A competition provides a broad evaluation of the security posture of the code at a particular moment
+based on the information available at the time of the review. While competitions endeavor to identify
+and disclose all potential security issues, they cannot guarantee that every vulnerability will be detected
+or that the code will be entirely secure against all possible attacks. The assessment is conducted based
+on the specific commit and version of the code provided. Any subsequent modifications to the code may
+introduce new vulnerabilities, therefore, any changes made to the code would require an additional security review. Please be advised that competitions are not a replacement for continuous security measures
+such as penetration testing, vulnerability scanning, and regular code reviews.
+% Unused: Coinbase   stablecoin liquidity
 
 
 
-\hypertarget{risk-classification}{%
-\section{Risk classification}\label{risk-classification}}
+% SUBSECTION: Risk Assessment
+\hypertarget{risk-assessment}{%
+\subsection{Risk assessment}\label{risk-assessment}}
 
 
 % Width of table lines to 0.5mm
@@ -32,60 +34,35 @@ Learn more about us at \href{https://spearbit.com}{spearbit.com}
 
 
 % --> Severity Classiification table: <--
-\begin{longtable}{@{}|l|l|l|l|@{}}
+\begin{center}
+
+\begin{tabular}{|l|l|l|l|}
   \hline \textbf{Severity level} & \textbf{Impact: High} & \textbf{Impact: Medium} & \textbf{Impact: Low} \\
   \hline \textbf{Likelihood: high} & Critical & High & Medium \\
   \hline \textbf{Likelihood: medium} & High & Medium & Low \\
   \hline \textbf{Likelihood: low} & Medium & Low & Low \\
   \hline
-\end{longtable}
+\end{tabular}
+\end{center}
 
 
-\hypertarget{impact}{%
-\subsection{Impact}\label{impact}}
+% SUB-SUB-SECTIONS
+\hypertarget{severity}{%
+\subsubsection{Severity Classification}\label{severity}}
 
-\begin{itemize}
-\tightlist
-\item
-  High - leads to a loss of a significant portion (\textgreater10\%) of
-  assets in the protocol, or significant harm to a majority of users.
-\item
-  Medium - global losses \textless10\% or losses to only a subset of
-  users, but still unacceptable.
-\item
-  Low - losses will be annoying but bearable-\/-applies to things like
-  griefing attacks that can be easily repaired or even gas
-  inefficiencies.
-\end{itemize}
+The severity of security issues found during the security review is 
+categorized based on the above matrix.
+High severity findings represent the most critical issues that must be addressed immediately,
+as they either have high impact and high likelihood of occurrence, or medium impact with high likelihood.
 
-\hypertarget{likelihood}{%
-\subsection{Likelihood}\label{likelihood}}
+Medium severity findings represent issues that, while not immediately critical, still pose
+significant risks and should be addressed promptly. These typically involve scenarios with
+medium impact and medium likelihood, or high impact with low likelihood.
 
-\begin{itemize}
-\tightlist
-\item
-  High - almost certain to happen, easy to perform, or not easy but
-  highly incentivized
-\item
-  Medium - only conditionally possible or incentivized, but still
-  relatively likely
-\item
-  Low - requires stars to align, or little-to-no incentive
-\end{itemize}
+Low severity findings represent issues that, while not posing immediate threats, could
+potentially cause problems in specific scenarios. These typically involve medium impact
+with low likelihood, or low impact with medium likelihood.
 
-\hypertarget{action-required-for-severity-levels}{%
-\subsection{Action required for severity
-levels}\label{action-required-for-severity-levels}}
-
-\begin{itemize}
-\tightlist
-\item
-  Critical - Must fix as soon as possible (if already deployed)
-\item
-  High - Must fix (before deployment if not already deployed)
-\item
-  Medium - Should fix
-\item
-  Low - Could fix
-\end{itemize}
+Lastly, some findings might represent improvements that don't directly impact
+security but could enhance the codebase's quality, readability, or efficiency (Gas and Informational findings).
 
