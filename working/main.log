@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.18.0 (TeX Live 2024)  (format=lualatex 2024.12.24)  30 NOV 2025 01:39
+This is LuaHBTeX, Version 1.18.0 (TeX Live 2024)  (format=lualatex 2024.12.24)  30 NOV 2025 01:41
  system commands enabled.
 **main.tex
 (./main.tex
@@ -1768,10 +1768,10 @@ So I'll assume that you meant to type \cr instead.
 \pydata@fh@_FAD58DE7366495DB4650CFEFAC2FCD61.data.minted=\write7
 
 \openout7 = _FAD58DE7366495DB4650CFEFAC2FCD61.data.minted
-runsystem(latexminted config  --timestamp 20251130013958 FAD58DE7366495DB4650CFE
+runsystem(latexminted config  --timestamp 20251130014132 FAD58DE7366495DB4650CFE
 FAC2FCD61)...executed.
 (./_FAD58DE7366495DB4650CFEFAC2FCD61.config.minted)
-runsystem(latexminted cleanconfig  --timestamp 20251130013958 FAD58DE7366495DB46
+runsystem(latexminted cleanconfig  --timestamp 20251130014132 FAD58DE7366495DB46
 50CFEFAC2FCD61)...executed.
 
 (./_minted/perldoc.style.minted)
@@ -1861,7 +1861,7 @@ vu/DejaVuSansMono.ttf></usr/local/texlive/2024/texmf-dist/fonts/truetype/ascende
 r/opensans/OpenSans-Bold.ttf></usr/local/texlive/2024/texmf-dist/fonts/truetype/
 ascender/opensans/OpenSans-Regular.ttf></usr/local/texlive/2024/texmf-dist/fonts
 /type1/public/amsfonts/symbols/msam10.pfb>
-Output written on main.pdf (8 pages, 483140 bytes).
+Output written on main.pdf (8 pages, 483137 bytes).
 
 PDF statistics: 226 PDF objects out of 1000 (max. 8388607)
  192 compressed objects within 2 object streams
