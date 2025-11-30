@@ -1,5 +1,13 @@
-# Cantina Security Review Report
+# Coinbase   stablecoin liquidity Report
 
-This repository is a template for the basic elements of a Cantina security review report, which are written semi-automatically by the Cantina team, and manually curated before generating the PDF file.
+**Team:** Coinbase
+**Website:** https://www.base.org/
+**Project:** Coinbase - Stablecoin Liquidity
+**GitHub:** https://github.com/cantina-forks/stablecoin-liquidity-audit
+**Type:** DeFi, AMM
+**Review Length:** 2
+**Review Timeline:** Nov 12th to Nov 14th
+**Cantina Type:** Cantina Managed
+**Commit Hash:** b9b70c7f
 
-DO NOT USE THIS REPOSITORY ON ITS OWN, IT IS INTENDED TO BE USED BY THE REPORT-GENERATING LOGIC.
+**Last Updated:** 2025-11-30
