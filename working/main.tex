@@ -1,56 +1,58 @@
-\documentclass[10pt]{article}
+\documentclass[10pt]{extarticle} % An extension of article to include 17pt font size
 \usepackage{draftwatermark}
 
 % Page layout - use geometry only
-\usepackage[a4paper, left=2cm, right=2cm, top=2cm, bottom=2cm]{geometry}
+\usepackage[left=2cm, right=2cm, top=2cm, bottom=2cm]{geometry}
 
-% Font and encoding
+% Font and encoding (modern approach)
 \usepackage{fontspec}  % Unicode support for LuaLaTeX
-\setmainfont{Open Sans}[
-  UprightFont = *-Regular,
+\usepackage{textgreek} % allows the use of Greek letters
+% Set Helvetica as sans-serif font (original font for spearbit_web3)
+% Fallback to Arial if Helvetica is not available
+\setsansfont{Helvetica}[
+  UprightFont = *,
   BoldFont = *-Bold,
-  ItalicFont = *-Italic,
-  BoldItalicFont = *-BoldItalic
+  ItalicFont = *-Oblique,
+  BoldItalicFont = *-BoldOblique
 ]
-% Define \fosfamily for compatibility with opensans package
-\newfontfamily\fosfamily{Open Sans}[
-  UprightFont = *-Regular,
-  BoldFont = *-Bold
-]
-\usepackage{microtype}
-
-% Math packages
-\usepackage{amsmath,amsfonts,amsthm}
+% If Helvetica is not found, fontspec will use a fallback
+% To explicitly set a fallback, uncomment the following:
+% \setsansfont{Helvetica}[
+%   UprightFont = *,
+%   BoldFont = *-Bold,
+%   ItalicFont = *-Oblique,
+%   BoldItalicFont = *-BoldOblique,
+%   Extension = .ttf
+% ]
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[helvet]{sfmath} % changes math style to sans serif
 
 % Essential packages
 \usepackage{parskip}
 \usepackage{svg}
 \usepackage[english]{babel}
-\usepackage[pages=some]{background}
-\backgroundsetup{
-scale=1,
-color=black,
-opacity=1,
-angle=0,
-contents={%
-  \includegraphics[width=\paperwidth,height=\paperheight]{img/cantina-door.pdf}
-  }%
-}
 
+% Math packages
+\usepackage{amsmath,amsfonts,amsthm}
+\usepackage{breqn}
+\setlength{\mathindent}{0pt}
+\allowdisplaybreaks[4]
+
+% Graphics (let LaTeX auto-detect engine)
 \usepackage{graphicx}
 \usepackage[htt]{hyphenat}
+
+% Colors and tables
 \usepackage[table]{xcolor}
+\definecolor{spearbitlink}{HTML}{000066}
+\definecolor{cantinaplatinum}{HTML}{E7E5E3}
+\definecolor{textbg}{HTML}{F5F5F5}
 \usepackage{tcolorbox}
 \usepackage{etoolbox}
 
-% Colors
-\definecolor{cantinalink}{HTML}{55747D}
-\definecolor{cantinaplatinum}{HTML}{E7E5E3}
-\definecolor{textbg}{HTML}{F5F5F5}
-
 % Code highlighting
 \usepackage{minted}
-\usemintedstyle{perldoc}
+\usemintedstyle{autumn}
 % Set monospace font for minted to support Unicode
 \setmonofont{DejaVu Sans Mono}[Scale=MatchLowercase]
 \setminted{frame=single, rulecolor=cantinaplatinum, fontsize=\small, samepage=false, breaklines=true, breakanywhere}
@@ -63,7 +65,7 @@ contents={%
 
 % Links
 \usepackage[hyphens]{url}
-\PassOptionsToPackage{hyphens}{url}\usepackage[hidelinks = true, colorlinks = true, linkcolor = black, urlcolor = cantinalink]{hyperref}
+\PassOptionsToPackage{hyphens}{url}\usepackage[hidelinks = true, colorlinks = true, linkcolor = black, urlcolor = spearbitlink]{hyperref}
 
 % Redefine \texttt to add light gray background (tight fit, rounded corners)
 % Must be after hyperref to work in TOC
@@ -83,7 +85,7 @@ contents={%
 \def\dontdofcolorbox{\renewcommand\fcolorbox[4][]{##4}}
 \makeatother
 
-\sloppy
+% workaround for filler: %
 
 \begin{document}
 
@@ -101,11 +103,11 @@ contents={%
 
     \input{overview.tex}
     \clearpage
-    
+
     \section{Findings}
     \rowcolors{2}{gray!10}{white}
     \input{report.tex}
-    \clearpage 
+    \clearpage
 
     \input{post_report.tex}
 

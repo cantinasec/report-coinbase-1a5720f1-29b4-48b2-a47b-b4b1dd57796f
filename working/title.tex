@@ -1,24 +1,49 @@
 \begin{titlepage}
-  \BgThispage
-  \vspace*{0.1cm}
-  \includesvg[width=0.6\textwidth]{img/cantina.svg}
+  \vbox{}
+  \vbox{}
 
-  \vspace{12cm}
+  \begin{center}
 
-  {
-    \fosfamily
-    \fontsize{36}{40}\bfseries\selectfont{Coinbase   stablecoin liquidity}}\\[0.5cm]
-  {\fontsize{24}{40}\selectfont{\textbf{Security Review}}}
-  \vspace{2cm}
+    \includesvg[width=0.75\textwidth]{img/spearbit_wordmark_black.svg}
+    \vspace{5cm}
 
-  {\fontsize{16}{24}\selectfont{Cantina Managed} review by: \\
-    \input{reviewers.tex}
-  }\\
+    % Title
+    \noindent\makebox[\linewidth]{\rule{.7\paperwidth}{.6pt}}\\[0.7cm]
 
-  \vfill
-  {\fontsize{16}{24}\selectfont \today}
+    { \huge \bfseries
 
-  % 
- % (unused for cantina)
+      Coinbase   stablecoin liquidity Security Review
+    }\\[0.25cm]
+    
+    \noindent\makebox[\linewidth]{\rule{.7\paperwidth}{.6pt}}\\[0.7cm]
+
+    % If subtitle is needed
+    % \large{Engagement II
+    % }\\[1.2 cm]
+    
+    \vfill
+
+
+    % Who are the auditors:
+    \Large
+    {\bfseries Auditors}\\
+
+    \vspace{0.2cm}
+    \input{reviewers.tex} % None (unused by spearbit)
+    \vspace{1cm}
+
+
+    % Who prepared the report:
+    \normalsize
+    {\bfseries Report prepared by:} 
+\\
+    \vspace{1cm}
+
+    % Date of when the report was generated:
+    {\normalsize \today}
+
+
+
+  \end{center}
 
 \end{titlepage}
