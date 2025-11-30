@@ -9,18 +9,24 @@
 \vspace{0.1cm}
 
 
-% Unused fields: 2 Coinbase https://www.base.org/ DeFi, AMM xxx xxx https://github.com/cantina-forks/stablecoin-liquidity-audit/tree/b9b70c7f4ce1ce47dd82ab1663f3f1c2726cac2f/ b9b70c7f
-From Nov 12th to Nov 14th Cantina hosted a competition based on \href{https://github.com/cantina-forks/stablecoin-liquidity-audit}{Coinbase - Stablecoin Liquidity}. The participants identified a total of \textbf{11} issues in the following risk categories:
+% Unused fields: 2 Coinbase https://www.base.org/ DeFi, AMM xxx xxx
+From Nov 12th to Nov 14th the security researchers conducted a review of \href{https://github.com/cantina-forks/stablecoin-liquidity-audit}{Coinbase - Stablecoin Liquidity} on commit hash \href{https://github.com/cantina-forks/stablecoin-liquidity-audit/tree/b9b70c7f4ce1ce47dd82ab1663f3f1c2726cac2f/}{b9b70c7f}. A total of \textbf{11} issues were identified:
  \\ 
 
-\begin{itemize}
-%    \item Critical Risk:      0
-    \item High Risk:          0
-    \item Medium Risk:        2
-    \item Low Risk:           0
-    \item Gas Optimizations:  0
-    \item Informational:      9
-\end{itemize}
+\begin{longtable}{|p{4cm}|p{2cm}|p{2cm}|p{3cm}|}
+    \caption*{\textbf{Issues Found}}
+    \hline
+    \textbf{Severity} & \textbf{Count} & \textbf{Fixed} & \textbf{Acknowledged} \\
+    \hline Critical Risk        & 0           & 0           & 0            \\
+    \hline High Risk            & 0               & 0               & 0                \\
+    \hline Medium Risk          & 2             & 2             & 0              \\
+    \hline Low Risk             & 0                & 0                & 0                 \\
+    \hline Gas Optimizations    & 0   & 0   & 0    \\ 
+    \hline Informational        & 9      & 8      & 1       \\
+    \hline
+    \textbf{Total} & \textbf{11} & \textbf{10} & \textbf{1} \\
+    \hline
+\end{longtable}
 
 
 
@@ -39,8 +45,6 @@ programs/scaas-liquidity
 │   └── state.rs
 └── Xargo.toml
 \end{minted}
-
-
 
 
 

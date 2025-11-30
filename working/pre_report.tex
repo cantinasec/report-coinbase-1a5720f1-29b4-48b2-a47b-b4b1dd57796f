@@ -11,13 +11,15 @@ researchers and solutions with clients. Learn more at
 
 \hypertarget{disclaimer}{
 \subsection{Disclaimer}\label{disclaimer}}
-A competition provides a broad evaluation of the security posture of the code at a particular moment
-based on the information available at the time of the review. While competitions endeavor to identify
-and disclose all potential security issues, they cannot guarantee that every vulnerability will be detected
-or that the code will be entirely secure against all possible attacks. The assessment is conducted based
-on the specific commit and version of the code provided. Any subsequent modifications to the code may
-introduce new vulnerabilities, therefore, any changes made to the code would require an additional security review. Please be advised that competitions are not a replacement for continuous security measures
-such as penetration testing, vulnerability scanning, and regular code reviews.
+A security review is a detailed evaluation of the security posture of the code at a particular moment based
+on the information available at the time of the review. While the review endeavors to identify and disclose
+all potential security issues, it cannot guarantee that every vulnerability will be detected or that the code
+will be entirely secure against all possible attacks. The assessment is conducted based on the specific
+commit and version of the code provided. Any subsequent modifications to the code may introduce new
+vulnerabilities that were absent during the initial review. Therefore, any changes made to the code require
+a new security review to ensure that the code remains secure. Please be advised that a security review is
+not a replacement for continuous security measures such as penetration testing, vulnerability scanning,
+and regular code reviews.
 % Unused: Coinbase   stablecoin liquidity
 
 
@@ -51,18 +53,15 @@ such as penetration testing, vulnerability scanning, and regular code reviews.
 \subsubsection{Severity Classification}\label{severity}}
 
 The severity of security issues found during the security review is 
-categorized based on the above matrix.
-High severity findings represent the most critical issues that must be addressed immediately,
-as they either have high impact and high likelihood of occurrence, or medium impact with high likelihood.
+categorized based on the above table. Critical findings have a high 
+likelihood of being exploited and must be addressed immediately. 
+High findings are almost certain to occur, easy to perform, 
+or not easy but highly incentivized thus must be fixed as soon as possible.
 
-Medium severity findings represent issues that, while not immediately critical, still pose
-significant risks and should be addressed promptly. These typically involve scenarios with
-medium impact and medium likelihood, or high impact with low likelihood.
+Medium findings are conditionally possible or incentivized but are still relatively likely
+to occur and should be addressed. Low findings are a rare combination of circumstances to exploit, 
+or offer little to no incentive to exploit but are recommended to be addressed.
 
-Low severity findings represent issues that, while not posing immediate threats, could
-potentially cause problems in specific scenarios. These typically involve medium impact
-with low likelihood, or low impact with medium likelihood.
-
-Lastly, some findings might represent improvements that don't directly impact
-security but could enhance the codebase's quality, readability, or efficiency (Gas and Informational findings).
+Lastly, some findings might represent objective improvements that should be addressed 
+but do not impact the project's overall security (Gas and Informational findings).
 
